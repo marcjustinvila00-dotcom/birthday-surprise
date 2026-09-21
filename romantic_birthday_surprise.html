@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, My Sweetheart ✨</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Sacramento&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            romantic: {
+              rose: '#f43f5e',
+              blush: '#fbcfe8',
+              lavender: '#e9d5ff',
+              cream: '#fffdfa',
+              deepRose: '#be123c',
+              softPink: '#fdf2f8'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            script: ['"Dancing Script"', 'cursive'],
+            handwriting: ['"Caveat"', 'cursive'],
+            letter: ['"Sacramento"', 'cursive'],
+            sans: ['"Inter"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      background: radial-gradient(circle at top left, #fff1f2, #fdf2f8 35%, #fae8ff 70%, #fef3c7 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #fxCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .polaroid {
+      background: white;
+      box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.12), 0 8px 10px -6px rgba(225, 29, 72, 0.05);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .polaroid:hover {
+      transform: translateY(-8px) scale(1.02) rotate(0deg) !important;
+      box-shadow: 0 20px 30px -10px rgba(225, 29, 72, 0.22);
+    }
+
+    .tape {
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      backdrop-filter: blur(2px);
+    }
+
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    .flame {
+      transform-origin: center bottom;
+      animation: flicker 1.2s infinite alternate ease-in-out;
+    }
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-1deg); opacity: 0.95; filter: drop-shadow(0 0 6px #f59e0b); }
+      50% { transform: scale(1.1, 1.2) rotate(2deg); opacity: 1; filter: drop-shadow(0 0 14px #fbbf24); }
+      100% { transform: scale(0.95, 0.98) rotate(-2deg); opacity: 0.88; filter: drop-shadow(0 0 8px #f59e0b); }
+    }
+
+    .flame.extinguished {
+      animation: smokeOut 0.8s forwards ease-out;
+    }
+    @keyframes smokeOut {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.4) translateY(-10px); opacity: 0.5; }
+      100% { transform: scale(0) translateY(-25px); opacity: 0; }
+    }
+
+    .eq-bar {
+      animation: bounceEq 1s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(2) { animation-delay: 0.2s; }
+    .eq-bar:nth-child(3) { animation-delay: 0.4s; }
+    .eq-bar:nth-child(4) { animation-delay: 0.15s; }
+    @keyframes bounceEq {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+
+    .pulse-slow {
+      animation: pulseSlow 2.5s infinite ease-in-out;
+    }
+    @keyframes pulseSlow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* Modal Fade Transitions */
+    .fade-overlay {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+  </style>
+</head>
+<body class="text-gray-800 antialiased selection:bg-pink-200 selection:text-pink-900">
+
+  <!-- Ambient floating hearts & sparkles canvas -->
+  <canvas id="fxCanvas"></canvas>
+
+  <!-- ================================================================= -->
+  <!-- 🎵 FOOLPROOF AUDIO ENGINE                                         -->
+  <!-- Place your song inside: `music/song.mp3` OR change src below!     -->
+  <!-- If no file is found, it automatically falls back to gentle        -->
+  <!-- romantic procedural chords so music ALWAYS plays!                -->
+  <!-- ================================================================= -->
+  <audio id="bgMusic" preload="auto" loop>
+    <!-- Default local path for GitHub Pages -->
+    <source src="music/song.mp3" type="audio/mpeg">
+    <!-- Fallback royalty-free romantic stream if desired -->
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-lofi-112199.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ================================================================= -->
+  <!-- 🎶 FLOATING MUSIC CONTROLLER BAR                                  -->
+  <!-- ================================================================= -->
+  <div class="fixed top-4 right-4 z-40 flex items-center gap-2 bg-white/85 backdrop-blur-md px-3.5 py-2 rounded-full shadow-lg border border-pink-100 hover:shadow-xl transition-all">
+    <!-- Play/Pause Button -->
+    <button id="musicToggleBtn" class="flex items-center gap-2 text-rose-600 focus:outline-none" title="Play or pause music">
+      <div id="discIcon" class="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 to-pink-400 flex items-center justify-center text-white text-xs shadow-inner transition-transform">
+        🎵
+      </div>
+      <div class="hidden sm:flex flex-col text-left pr-1">
+        <span id="currentSongTitle" class="text-xs font-semibold text-gray-800 tracking-wide max-w-[130px] truncate">Our Song</span>
+        <span id="musicSourceBadge" class="text-[10px] text-rose-500 font-medium">Ready to play</span>
+      </div>
+      <!-- Equalizer Visualizer -->
+      <div id="eqBars" class="hidden items-end gap-[2px] h-4 w-4 ml-1">
+        <span class="eq-bar w-1 bg-rose-500 rounded-full h-2"></span>
+        <span class="eq-bar w-1 bg-pink-400 rounded-full h-4"></span>
+        <span class="eq-bar w-1 bg-rose-500 rounded-full h-3"></span>
+      </div>
+    </button>
+
+    <!-- Music Settings & Audio Switcher Button -->
+    <button id="openMusicModalBtn" class="p-1.5 hover:bg-pink-100/70 rounded-full text-gray-600 hover:text-rose-600 transition" title="Change song or upload audio">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+      </svg>
+    </button>
+
+    <!-- GitHub Deployment Help Guide Button -->
+    <button id="guideBtn" class="text-xs bg-pink-100 hover:bg-pink-200 text-pink-700 font-medium px-2.5 py-1 rounded-full transition" title="GitHub deployment tutorial">
+      GitHub 💡
+    </button>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- 💌 STAGE 0: ROMANTIC WAX-SEAL ENVELOPE ENTRANCE                   -->
+  <!-- Satisfies browser autoplay restrictions on click                  -->
+  <!-- ================================================================= -->
+  <div id="envelopeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-rose-50/95 backdrop-blur-md px-4 transition-opacity duration-700">
+    <div class="max-w-md w-full text-center">
+      <div class="relative mx-auto w-72 sm:w-80 h-52 bg-gradient-to-br from-rose-100 via-pink-100 to-pink-200 rounded-3xl shadow-2xl border-4 border-white flex flex-col items-center justify-center p-6 transform transition hover:-translate-y-1">
+        <!-- Postal stamp -->
+        <div class="absolute top-4 right-4 w-10 h-12 border-2 border-dashed border-rose-300 rounded-lg bg-rose-50 flex flex-col items-center justify-center text-xs text-rose-500 shadow-sm">
+          <span>💌</span>
+          <span class="text-[8px] uppercase tracking-wider font-bold">Love</span>
+        </div>
+
+        <p class="font-handwriting text-2xl text-rose-600 mb-1">A Special Delivery For</p>
+        <h2 class="font-script text-3xl sm:text-4xl text-rose-700 mb-4 font-bold">
+          <!-- EDIT HER NAME: -->
+          My Beautiful Girl
+        </h2>
+
+        <!-- Interactive Wax Seal Button -->
+        <button id="openEnvelopeBtn" class="pulse-slow group relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-rose-600 via-pink-500 to-rose-500 text-white shadow-xl hover:scale-110 active:scale-95 transition-all border-4 border-rose-100">
+          <span class="text-2xl group-hover:rotate-12 transition-transform">💖</span>
+          <span class="absolute -bottom-8 whitespace-nowrap text-xs font-semibold tracking-wider text-rose-700 bg-white/95 px-3 py-1 rounded-full shadow-md border border-pink-100">
+            TAP TO OPEN
+          </span>
+        </button>
+      </div>
+      <p class="text-xs text-rose-400 mt-10 tracking-wide font-medium">Turn up your volume for our song 🎶✨</p>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- 🌸 MAIN WEBSITE CONTENT                                           -->
+  <!-- ================================================================= -->
+  <main id="mainPage" class="relative z-20 opacity-0 transition-opacity duration-1000 max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-24 space-y-24">
+
+    <!-- ================================================================= -->
+    <!-- 💖 HERO SECTION                                                   -->
+    <!-- ================================================================= -->
+    <header class="text-center pt-8 sm:pt-14 relative">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-100/90 text-rose-600 border border-pink-200 text-xs sm:text-sm font-medium mb-5 shadow-sm">
+        <span>✨</span> Today is all about you <span>✨</span>
+      </div>
+
+      <!-- EDIT GIRLFRIEND'S NAME HERE -->
+      <h1 class="font-script text-5xl sm:text-7xl md:text-8xl text-rose-600 font-bold tracking-wide drop-shadow-sm mb-4">
+        Happy Birthday, <span class="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 via-pink-500 to-purple-600">Sophia</span>! 🎂
+      </h1>
+
+      <p class="font-serif italic text-lg sm:text-2xl text-gray-700 max-w-2xl mx-auto leading-relaxed">
+        "In a world of billions, my heart chose you. Today we celebrate the most wonderful, radiant person to ever walk into my life."
+      </p>
+
+      <!-- Live Counter / Days Together Badge -->
+      <div class="mt-8 inline-block bg-white/85 backdrop-blur-md px-6 py-3.5 rounded-2xl border border-pink-100 shadow-md">
+        <p class="text-xs uppercase tracking-widest text-rose-500 font-bold mb-1">Days with you and counting</p>
+        <div class="flex items-center justify-center gap-3">
+          <span class="text-2xl">❤️</span>
+          <span id="daysCounter" class="text-2xl sm:text-3xl font-bold font-sans text-gray-800">...</span>
+          <span class="text-xs sm:text-sm text-gray-600 font-medium">unforgettable days together</span>
+        </div>
+      </div>
+
+      <!-- Jump Down Button -->
+      <div class="mt-10">
+        <a href="#memoriesSection" class="inline-flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-medium px-7 py-3 rounded-full shadow-md hover:shadow-lg hover:from-rose-600 hover:to-pink-600 transition-all transform hover:-translate-y-0.5 text-sm">
+          <span>Explore Our Memories</span>
+          <span>↓</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ================================================================= -->
+    <!-- 📸 MEMORIES TIMELINE                                              -->
+    <!-- ================================================================= -->
+    <section id="memoriesSection" class="pt-6">
+      <div class="text-center mb-14">
+        <span class="text-xs uppercase tracking-widest text-rose-500 font-bold">Our Sweet Journey</span>
+        <h2 class="font-serif text-3xl sm:text-4xl text-gray-800 font-bold mt-1">Milestones of Us</h2>
+        <div class="w-16 h-1 bg-pink-300 mx-auto mt-3 rounded-full"></div>
+      </div>
+
+      <div class="relative border-l-2 border-pink-200 ml-4 sm:ml-32 space-y-12 pl-6 sm:pl-10">
+        
+        <!-- Timeline Item 1 -->
+        <div class="relative group">
+          <div class="absolute -left-[35px] sm:-left-[51px] top-2 w-8 h-8 rounded-full bg-pink-100 border-2 border-pink-400 flex items-center justify-center text-sm shadow-sm">
+            🌸
+          </div>
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+            <!-- EDIT DATE: --> September 24, 2023
+          </span>
+          <div class="mt-3 bg-white/85 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition">
+            <h3 class="font-serif text-xl font-bold text-gray-800">The Day We First Met</h3>
+            <p class="text-gray-600 text-sm mt-2 leading-relaxed">
+              <!-- EDIT TEXT: -->
+              I still remember how your laughter lit up the entire room. You ordered that iced matcha latte with sweet foam, and from that very moment, I knew you were going to be someone unforgettable.
+            </p>
+          </div>
+        </div>
+
+        <!-- Timeline Item 2 -->
+        <div class="relative group">
+          <div class="absolute -left-[35px] sm:-left-[51px] top-2 w-8 h-8 rounded-full bg-pink-100 border-2 border-pink-400 flex items-center justify-center text-sm shadow-sm">
+            ☕
+          </div>
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+            <!-- EDIT DATE: --> December 15, 2023
+          </span>
+          <div class="mt-3 bg-white/85 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition">
+            <h3 class="font-serif text-xl font-bold text-gray-800">Our First Road Trip</h3>
+            <p class="text-gray-600 text-sm mt-2 leading-relaxed">
+              <!-- EDIT TEXT: -->
+              Getting lost down quiet coastal roads, sharing a single jacket when it started to rain, and talking about our dreams until 3 AM. It felt like living inside a movie.
+            </p>
+          </div>
+        </div>
+
+        <!-- Timeline Item 3 -->
+        <div class="relative group">
+          <div class="absolute -left-[35px] sm:-left-[51px] top-2 w-8 h-8 rounded-full bg-pink-100 border-2 border-pink-400 flex items-center justify-center text-sm shadow-sm">
+            ✨
+          </div>
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+            <!-- EDIT DATE: --> Today & Beyond
+          </span>
+          <div class="mt-3 bg-white/85 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition">
+            <h3 class="font-serif text-xl font-bold text-gray-800">Another Year of Adoring You</h3>
+            <p class="text-gray-600 text-sm mt-2 leading-relaxed">
+              <!-- EDIT TEXT: -->
+              Another trip around the sun, and you continue to get sweeter, more inspiring, and more precious every single day. Here is to a lifetime of adventures together!
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- 🖼️ ROMANTIC POLAROID SCRAPBOOK GALLERY                            -->
+    <!-- ================================================================= -->
+    <section id="gallerySection">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase tracking-widest text-rose-500 font-bold">Snapshots of Us</span>
+        <h2 class="font-serif text-3xl sm:text-4xl text-gray-800 font-bold mt-1">Our Favorite Smiles</h2>
+        <p class="text-xs sm:text-sm text-gray-500 mt-2">Click any Polaroid to view full picture 📸</p>
+        <div class="w-16 h-1 bg-pink-300 mx-auto mt-3 rounded-full"></div>
+      </div>
+
+      <!-- 
+        NOTE: Place her photos inside `images/` folder as `photo1.jpg`, `photo2.jpg` etc.,
+        or update the src links directly. Fallback placeholder is provided!
+      -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6 pt-4">
+        
+        <!-- Polaroid 1 -->
+        <div class="polaroid p-4 rounded-2xl cursor-pointer transform -rotate-2 relative" onclick="openLightbox('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1000&q=80', 'Your glowing warm smile 💕')">
+          <div class="tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 rotate-1"></div>
+          <div class="w-full h-64 overflow-hidden rounded-xl bg-pink-50">
+            <img src="images/photo1.jpg" alt="Special memory 1" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=700&q=80';">
+          </div>
+          <p class="font-handwriting text-xl text-center text-gray-700 mt-3">The smile that melted my heart ❤️</p>
+        </div>
+
+        <!-- Polaroid 2 -->
+        <div class="polaroid p-4 rounded-2xl cursor-pointer transform rotate-3 relative" onclick="openLightbox('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1000&q=80', 'Sunny afternoons with you ☀️')">
+          <div class="tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 -rotate-2"></div>
+          <div class="w-full h-64 overflow-hidden rounded-xl bg-pink-50">
+            <img src="images/photo2.jpg" alt="Special memory 2" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=700&q=80';">
+          </div>
+          <p class="font-handwriting text-xl text-center text-gray-700 mt-3">Golden hours are best with you ✨</p>
+        </div>
+
+        <!-- Polaroid 3 -->
+        <div class="polaroid p-4 rounded-2xl cursor-pointer transform -rotate-1 relative" onclick="openLightbox('https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1000&q=80', 'Sweet coffee & endless talks ☕')">
+          <div class="tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 rotate-2"></div>
+          <div class="w-full h-64 overflow-hidden rounded-xl bg-pink-50">
+            <img src="images/photo3.jpg" alt="Special memory 3" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=700&q=80';">
+          </div>
+          <p class="font-handwriting text-xl text-center text-gray-700 mt-3">Every sweet coffee date ☕</p>
+        </div>
+
+        <!-- Polaroid 4 -->
+        <div class="polaroid p-4 rounded-2xl cursor-pointer transform rotate-2 relative" onclick="openLightbox('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80', 'Pure radiance 🌸')">
+          <div class="tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 -rotate-1"></div>
+          <div class="w-full h-64 overflow-hidden rounded-xl bg-pink-50">
+            <img src="images/photo4.jpg" alt="Special memory 4" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80';">
+          </div>
+          <p class="font-handwriting text-xl text-center text-gray-700 mt-3">My absolute favorite portrait 🌷</p>
+        </div>
+
+        <!-- Polaroid 5 -->
+        <div class="polaroid p-4 rounded-2xl cursor-pointer transform -rotate-3 relative" onclick="openLightbox('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1000&q=80', 'Celebrating every win 🎉')">
+          <div class="tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 rotate-3"></div>
+          <div class="w-full h-64 overflow-hidden rounded-xl bg-pink-50">
+            <img src="images/photo5.jpg" alt="Special memory 5" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80';">
+          </div>
+          <p class="font-handwriting text-xl text-center text-gray-700 mt-3">Celebrating you every single day 🎆</p>
+        </div>
+
+        <!-- Polaroid 6 -->
+        <div class="polaroid p-4 rounded-2xl cursor-pointer transform rotate-1 relative" onclick="openLightbox('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1000&q=80', 'Forever hand in hand 🌅')">
+          <div class="tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 -rotate-2"></div>
+          <div class="w-full h-64 overflow-hidden rounded-xl bg-pink-50">
+            <img src="images/photo6.jpg" alt="Special memory 6" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=700&q=80';">
+          </div>
+          <p class="font-handwriting text-xl text-center text-gray-700 mt-3">Hand in hand by the ocean 🌊</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- 💌 6 REASONS WHY I LOVE YOU (Interactive Flip Cards)               -->
+    <!-- ================================================================= -->
+    <section id="reasonsSection">
+      <div class="text-center mb-10">
+        <span class="text-xs uppercase tracking-widest text-rose-500 font-bold">From my whole heart</span>
+        <h2 class="font-serif text-3xl sm:text-4xl text-gray-800 font-bold mt-1">Reasons Why I Adore You</h2>
+        <p class="text-xs sm:text-sm text-gray-500 mt-1">Tap each card to flip and read 💌</p>
+        <div class="w-16 h-1 bg-pink-300 mx-auto mt-3 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Reason 1 -->
+        <div class="flip-card h-44 cursor-pointer" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front bg-white/85 border border-pink-100 shadow-sm flex flex-col items-center justify-center p-6 text-center hover:bg-pink-50/50 transition">
+              <span class="text-3xl mb-2">✨</span>
+              <h4 class="font-serif font-bold text-gray-700">Your Kind Soul</h4>
+              <span class="text-xs text-rose-500 mt-2 font-medium">Click to flip ↷</span>
+            </div>
+            <div class="flip-card-back bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md flex items-center justify-center p-6 text-center">
+              <p class="text-sm font-medium leading-relaxed">The quiet kindness and empathy you show to everyone around you is pure sunshine.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason 2 -->
+        <div class="flip-card h-44 cursor-pointer" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front bg-white/85 border border-pink-100 shadow-sm flex flex-col items-center justify-center p-6 text-center hover:bg-pink-50/50 transition">
+              <span class="text-3xl mb-2">🌟</span>
+              <h4 class="font-serif font-bold text-gray-700">Your Radiant Laugh</h4>
+              <span class="text-xs text-rose-500 mt-2 font-medium">Click to flip ↷</span>
+            </div>
+            <div class="flip-card-back bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md flex items-center justify-center p-6 text-center">
+              <p class="text-sm font-medium leading-relaxed">The way your eyes crinkle when you truly laugh out loud is my absolute favorite sight in this world.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason 3 -->
+        <div class="flip-card h-44 cursor-pointer" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front bg-white/85 border border-pink-100 shadow-sm flex flex-col items-center justify-center p-6 text-center hover:bg-pink-50/50 transition">
+              <span class="text-3xl mb-2">☕</span>
+              <h4 class="font-serif font-bold text-gray-700">Our Cozy Silences</h4>
+              <span class="text-xs text-rose-500 mt-2 font-medium">Click to flip ↷</span>
+            </div>
+            <div class="flip-card-back bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md flex items-center justify-center p-6 text-center">
+              <p class="text-sm font-medium leading-relaxed">How safe and tranquil it feels to just sit quietly beside you without needing words.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason 4 -->
+        <div class="flip-card h-44 cursor-pointer" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front bg-white/85 border border-pink-100 shadow-sm flex flex-col items-center justify-center p-6 text-center hover:bg-pink-50/50 transition">
+              <span class="text-3xl mb-2">🎯</span>
+              <h4 class="font-serif font-bold text-gray-700">Your Passion</h4>
+              <span class="text-xs text-rose-500 mt-2 font-medium">Click to flip ↷</span>
+            </div>
+            <div class="flip-card-back bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md flex items-center justify-center p-6 text-center">
+              <p class="text-sm font-medium leading-relaxed">Watching your eyes sparkle when you talk about what you love inspires me so much.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason 5 -->
+        <div class="flip-card h-44 cursor-pointer" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front bg-white/85 border border-pink-100 shadow-sm flex flex-col items-center justify-center p-6 text-center hover:bg-pink-50/50 transition">
+              <span class="text-3xl mb-2">🫂</span>
+              <h4 class="font-serif font-bold text-gray-700">Your Warm Hugs</h4>
+              <span class="text-xs text-rose-500 mt-2 font-medium">Click to flip ↷</span>
+            </div>
+            <div class="flip-card-back bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md flex items-center justify-center p-6 text-center">
+              <p class="text-sm font-medium leading-relaxed">One warm hug from you erases every worry and makes the whole world feel peaceful.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason 6 -->
+        <div class="flip-card h-44 cursor-pointer" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front bg-white/85 border border-pink-100 shadow-sm flex flex-col items-center justify-center p-6 text-center hover:bg-pink-50/50 transition">
+              <span class="text-3xl mb-2">♾️</span>
+              <h4 class="font-serif font-bold text-gray-700">Being You</h4>
+              <span class="text-xs text-rose-500 mt-2 font-medium">Click to flip ↷</span>
+            </div>
+            <div class="flip-card-back bg-gradient-to-tr from-rose-500 to-pink-500 text-white shadow-md flex items-center justify-center p-6 text-center">
+              <p class="text-sm font-medium leading-relaxed">You don't need to try or pretend. You are effortlessly and perfectly my favorite person.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- 📜 A HEARTFELT LOVE LETTER                                        -->
+    <!-- ================================================================= -->
+    <section id="letterSection" class="relative max-w-3xl mx-auto">
+      <div class="relative bg-[#fffdfa] p-8 sm:p-12 rounded-3xl shadow-xl border-2 border-rose-100 overflow-hidden">
+        
+        <div class="absolute top-4 right-4 text-6xl opacity-10 select-none pointer-events-none">🌹</div>
+
+        <div class="text-center mb-6">
+          <span class="text-3xl">💌</span>
+          <h3 class="font-serif text-2xl sm:text-3xl text-gray-800 font-bold mt-1">A Letter Just For You</h3>
+          <p class="font-script text-xl text-rose-500">Read slowly, my love</p>
+        </div>
+
+        <!-- EDIT CUSTOM LOVE LETTER BODY -->
+        <div class="space-y-4 text-gray-700 leading-relaxed font-sans text-sm sm:text-base">
+          <p class="font-semibold text-rose-600 font-serif text-lg">My Dearest Sophia,</p>
+          
+          <p>
+            As you celebrate another milestone of life today, I wanted to put into writing what often escapes spoken words. You have brought so much peace, laughter, and true meaning into my life that ordinary days feel extraordinary just because you are in them.
+          </p>
+
+          <p>
+            Thank you for being my constant teammate, my best friend, and my greatest source of joy. Thank you for your warmth, your patience, and for loving me exactly as I am.
+          </p>
+
+          <p>
+            My only birthday wish for you is that this new chapter gives back every ounce of light and tenderness you give to the world. May your wildest dreams come true, your days be gentle, and your heart always remember just how unconditionally loved you are.
+          </p>
+
+          <div class="pt-6 border-t border-rose-100 flex flex-col items-end">
+            <p class="text-sm text-gray-500 italic">Forever and always,</p>
+            <p class="font-letter text-3xl sm:text-4xl text-rose-600 font-bold mt-1">With all my love ❤️</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- 🎂 BIRTHDAY CLIMAX: VIRTUAL CAKE & BLOW OUT CANDLES              -->
+    <!-- ================================================================= -->
+    <section id="cakeSection" class="text-center pt-8 pb-12">
+      <div class="mb-8">
+        <span class="text-xs uppercase tracking-widest text-rose-500 font-bold">Make A Wish</span>
+        <h2 class="font-serif text-3xl sm:text-4xl text-gray-800 font-bold mt-1">Blow Out Your Birthday Candles! 🎂</h2>
+        <p class="text-xs sm:text-sm text-gray-500 mt-2">Tap the candle flames or the button below to blow them out!</p>
+        <div class="w-16 h-1 bg-pink-300 mx-auto mt-3 rounded-full"></div>
+      </div>
+
+      <!-- Interactive Birthday Cake -->
+      <div class="relative inline-block mx-auto">
+        <div class="flex items-end justify-center gap-6 sm:gap-8 mb-[-6px] relative z-20">
+          
+          <!-- Candle 1 -->
+          <div class="candle-wrapper cursor-pointer flex flex-col items-center group" onclick="blowCandle(1)">
+            <div id="flame1" class="flame w-4 h-6 rounded-full bg-gradient-to-t from-orange-400 via-yellow-300 to-white shadow-lg transition-all"></div>
+            <div class="w-1 h-3 bg-gray-600"></div>
+            <div class="w-3.5 h-12 bg-gradient-to-b from-pink-300 to-rose-400 rounded-sm border border-pink-200 flex flex-col justify-between py-1">
+              <span class="w-full h-0.5 bg-white/70"></span>
+              <span class="w-full h-0.5 bg-white/70"></span>
+            </div>
+          </div>
+
+          <!-- Candle 2 (Center) -->
+          <div class="candle-wrapper cursor-pointer flex flex-col items-center group" onclick="blowCandle(2)">
+            <div id="flame2" class="flame w-4 h-7 rounded-full bg-gradient-to-t from-orange-400 via-yellow-300 to-white shadow-lg transition-all"></div>
+            <div class="w-1 h-3 bg-gray-600"></div>
+            <div class="w-3.5 h-14 bg-gradient-to-b from-purple-300 to-pink-400 rounded-sm border border-pink-200 flex flex-col justify-between py-1">
+              <span class="w-full h-0.5 bg-white/70"></span>
+              <span class="w-full h-0.5 bg-white/70"></span>
+            </div>
+          </div>
+
+          <!-- Candle 3 -->
+          <div class="candle-wrapper cursor-pointer flex flex-col items-center group" onclick="blowCandle(3)">
+            <div id="flame3" class="flame w-4 h-6 rounded-full bg-gradient-to-t from-orange-400 via-yellow-300 to-white shadow-lg transition-all"></div>
+            <div class="w-1 h-3 bg-gray-600"></div>
+            <div class="w-3.5 h-12 bg-gradient-to-b from-pink-300 to-rose-400 rounded-sm border border-pink-200 flex flex-col justify-between py-1">
+              <span class="w-full h-0.5 bg-white/70"></span>
+              <span class="w-full h-0.5 bg-white/70"></span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Cake Structure -->
+        <div class="relative w-64 sm:w-80 mx-auto z-10">
+          <div class="w-48 sm:w-56 h-16 mx-auto bg-gradient-to-r from-rose-100 via-pink-100 to-rose-100 rounded-t-2xl border-4 border-b-0 border-white shadow-sm flex items-center justify-around px-4">
+            <span class="text-sm">🍓</span>
+            <span class="text-xs text-rose-400">✨</span>
+            <span class="text-sm">🍓</span>
+            <span class="text-xs text-rose-400">✨</span>
+            <span class="text-sm">🍓</span>
+          </div>
+          <div class="w-64 sm:w-80 h-24 bg-gradient-to-r from-pink-200 via-rose-200 to-pink-200 rounded-2xl border-4 border-white shadow-xl flex items-center justify-between px-6">
+            <span class="text-xl">🌸</span>
+            <span class="font-script text-xl text-rose-700 font-bold">Happy Birthday</span>
+            <span class="text-xl">🌸</span>
+          </div>
+          <div class="w-72 sm:w-96 h-4 bg-white rounded-full mx-auto -mt-2 shadow-md border border-pink-100"></div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="mt-8">
+        <button id="blowAllBtn" onclick="blowAllCandles()" class="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 text-white font-semibold px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition-all text-sm sm:text-base">
+          🌬️ Blow Out All Candles & Make A Wish!
+        </button>
+      </div>
+
+      <!-- Grand Celebration Climax Reveal -->
+      <div id="grandReveal" class="hidden mt-12 max-w-xl mx-auto bg-white/95 backdrop-blur-md p-8 rounded-3xl border-2 border-pink-200 shadow-2xl animate-fade-in">
+        <span class="text-4xl">🎉 🥳 💖</span>
+        <h3 class="font-script text-4xl sm:text-5xl text-rose-600 font-bold mt-2 mb-3">
+          Happy Birthday, Sophia! ❤️
+        </h3>
+        <p class="text-gray-700 font-serif italic text-base sm:text-lg">
+          "May every wish you made today find its way back to your heart."
+        </p>
+        <div class="mt-6 flex flex-wrap justify-center gap-3">
+          <button onclick="triggerConfettiStorm()" class="text-xs font-semibold uppercase tracking-wider text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-5 py-2.5 rounded-full transition shadow-sm">
+            Release Confetti Shower 🎊
+          </button>
+          <button onclick="relightCandles()" class="text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 hover:bg-gray-200 px-4 py-2.5 rounded-full transition">
+            Relight Candles 🕯️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-center pt-10 border-t border-pink-200/60 text-xs text-gray-500 space-y-2">
+      <p class="font-serif">Crafted with endless love for your special day 💕</p>
+      <p class="text-gray-400">Ready for instant hosting on GitHub Pages</p>
+    </footer>
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- 🎵 MUSIC CUSTOMIZER MODAL                                         -->
+  <!-- ================================================================= -->
+  <div id="musicModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl p-6 relative" onclick="event.stopPropagation()">
+      <button onclick="closeMusicModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm transition">
+        ✕
+      </button>
+
+      <div class="flex items-center gap-2 text-rose-600 font-bold text-lg mb-1">
+        <span>🎶</span>
+        <span>Background Music Settings</span>
+      </div>
+      <p class="text-xs text-gray-500 mb-5">Choose how you want to play music for her:</p>
+
+      <div class="space-y-4">
+        <!-- Option 1: File drop explanation -->
+        <div class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100 text-xs text-gray-700">
+          <div class="flex items-center gap-1.5 font-bold text-rose-700 mb-1">
+            <span>📁</span> <span>Option 1: Recommended for GitHub Pages</span>
+          </div>
+          Simply create a <code class="bg-white px-1.5 py-0.5 rounded text-rose-600 font-mono text-[11px] border border-rose-200">music/</code> folder and drop your song as <code class="bg-white px-1.5 py-0.5 rounded text-rose-600 font-mono text-[11px] border border-rose-200">song.mp3</code>! It plays automatically.
+        </div>
+
+        <!-- Option 2: Live Device Upload / Tester -->
+        <div class="p-3.5 rounded-2xl bg-white border border-gray-200 shadow-sm text-xs space-y-2">
+          <label class="block font-bold text-gray-800">Option 2: Test / Play an MP3 directly from your device</label>
+          <input type="file" id="localAudioPicker" accept="audio/*" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-rose-100 file:text-rose-700 hover:file:bg-rose-200 cursor-pointer">
+          <span class="text-[10px] text-gray-400 block">Selects and plays instantly without uploading to any server.</span>
+        </div>
+
+        <!-- Option 3: Direct Web Stream URL -->
+        <div class="p-3.5 rounded-2xl bg-white border border-gray-200 shadow-sm text-xs space-y-2">
+          <label class="block font-bold text-gray-800">Option 3: Paste Direct Audio Link (.mp3)</label>
+          <div class="flex gap-2">
+            <input type="url" id="customAudioUrlInput" placeholder="https://example.com/song.mp3" class="w-full text-xs border border-gray-300 rounded-xl px-3 py-1.5 focus:outline-none focus:border-rose-400">
+            <button onclick="loadCustomAudioUrl()" class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-xl font-medium shrink-0 transition">Apply</button>
+          </div>
+        </div>
+
+        <!-- Volume Controller -->
+        <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
+          <span class="text-xs font-semibold text-gray-700">Volume</span>
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.7" class="w-36 accent-rose-500 cursor-pointer">
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <button onclick="closeMusicModal()" class="bg-rose-600 text-white text-xs font-semibold px-5 py-2.5 rounded-full hover:bg-rose-700 transition">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm items-center justify-center p-4" onclick="closeLightbox()">
+    <div class="max-w-2xl w-full bg-white p-4 rounded-3xl shadow-2xl relative" onclick="event.stopPropagation()">
+      <button onclick="closeLightbox()" class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-sm shadow-md hover:bg-rose-600 transition">
+        ✕
+      </button>
+      <div class="w-full h-80 sm:h-[450px] overflow-hidden rounded-2xl bg-gray-100">
+        <img id="lightboxImg" src="" alt="Enlarged photo" class="w-full h-full object-contain">
+      </div>
+      <p id="lightboxCaption" class="font-handwriting text-2xl text-center text-gray-700 mt-3"></p>
+    </div>
+  </div>
+
+  <!-- GITHUB SETUP GUIDE MODAL -->
+  <div id="guideModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4" onclick="closeGuide()">
+    <div class="max-w-xl w-full bg-white rounded-3xl shadow-2xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <button onclick="closeGuide()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold text-sm transition">
+        ✕
+      </button>
+      
+      <div class="flex items-center gap-2 text-rose-600 font-bold text-lg mb-4">
+        <span>🚀</span>
+        <span>Quick GitHub Pages Deployment</span>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-gray-600 leading-relaxed">
+        <div>
+          <strong class="text-gray-800">1. Folder Structure:</strong>
+          <pre class="bg-gray-50 border border-gray-200 p-3 rounded-xl mt-1 font-mono text-[11px] text-rose-700 leading-normal">
+birthday-surprise/
+├── index.html        (Save this code file)
+├── images/           (Drop photos: photo1.jpg, photo2.jpg...)
+└── music/            (Drop her song: song.mp3)
+          </pre>
+        </div>
+
+        <div>
+          <strong class="text-gray-800">2. Create GitHub Repo:</strong>
+          <p class="mt-1">Go to <code class="bg-gray-100 px-1 py-0.5 rounded text-rose-600">github.com/new</code>, name it <code class="bg-gray-100 px-1 py-0.5 rounded">birthday-surprise</code>, select <strong>Public</strong>, and click <strong>Create</strong>.</p>
+        </div>
+
+        <div>
+          <strong class="text-gray-800">3. Drag & Drop Files:</strong>
+          <p class="mt-1">Click <strong>"uploading an existing file"</strong>, drag the <code class="bg-gray-100 px-1 py-0.5 rounded">index.html</code>, <code class="bg-gray-100 px-1 py-0.5 rounded">images</code> folder, and <code class="bg-gray-100 px-1 py-0.5 rounded">music</code> folder, then commit.</p>
+        </div>
+
+        <div>
+          <strong class="text-gray-800">4. Turn on GitHub Pages:</strong>
+          <p class="mt-1">Go to <strong>Settings</strong> → <strong>Pages</strong> → Under <strong>Branch</strong> select <code class="bg-gray-100 px-1 py-0.5 rounded">main</code> / <code class="bg-gray-100 px-1 py-0.5 rounded">root</code> → Click <strong>Save</strong>.</p>
+        </div>
+
+        <div class="bg-rose-50 border border-rose-200 p-3 rounded-xl text-rose-800 text-xs">
+          ✨ Your link will be live at: <br>
+          <span class="font-mono font-bold text-rose-600">https://yourusername.github.io/birthday-surprise/</span>
+        </div>
+      </div>
+
+      <div class="mt-6 text-right">
+        <button onclick="closeGuide()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition shadow-sm">
+          Got it!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- ⚙️ JAVASCRIPT LOGIC & AUDIO ENGINE                                -->
+  <!-- ================================================================= -->
+  <script>
+    // --- USER CONFIGURATION ---
+    // Change this date to when you two met or started dating!
+    const relationshipStartDate = new Date("2024-09-24");
+
+    // Audio & State
+    let audioPlaying = false;
+    let usingSynthFallback = false;
+    let audioCtx = null;
+    let synthInterval = null;
+    let totalCandles = 3;
+    let blownCandles = 0;
+
+    // DOM Elements
+    const canvas = document.getElementById('fxCanvas');
+    const ctx = canvas.getContext('2d');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggleBtn = document.getElementById('musicToggleBtn');
+    const discIcon = document.getElementById('discIcon');
+    const musicSourceBadge = document.getElementById('musicSourceBadge');
+    const currentSongTitle = document.getElementById('currentSongTitle');
+    const eqBars = document.getElementById('eqBars');
+    const envelopeModal = document.getElementById('envelopeModal');
+    const mainPage = document.getElementById('mainPage');
+    const localAudioPicker = document.getElementById('localAudioPicker');
+    const volumeSlider = document.getElementById('volumeSlider');
+
+    // Calculate dynamic Days Counter
+    function updateDaysCounter() {
+      const today = new Date();
+      const diffTime = Math.abs(today - relationshipStartDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const counterEl = document.getElementById('daysCounter');
+      if (counterEl) counterEl.textContent = diffDays;
+    }
+    updateDaysCounter();
+
+    // ==========================================
+    // 🎵 AUDIO ENGINE IMPLEMENTATION
+    // ==========================================
+    function initAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Gentle romantic chime chord generator if no MP3 exists
+    function startRomanticSynthFallback() {
+      initAudioContext();
+      usingSynthFallback = true;
+      musicSourceBadge.textContent = 'Ambient Chimes 🌸';
+      currentSongTitle.textContent = 'Dreamy Lullaby';
+
+      const chords = [
+        [261.63, 329.63, 392.00, 493.88], // Cmaj7
+        [220.00, 261.63, 329.63, 392.00], // Am7
+        [174.61, 220.00, 261.63, 349.23], // Fmaj7
+        [196.00, 261.63, 293.66, 392.00]  // Gsus4
+      ];
+      let step = 0;
+
+      function playNextChord() {
+        if (!audioPlaying || !usingSynthFallback) return;
+        const currentChord = chords[step % chords.length];
+        step++;
+
+        currentChord.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const now = audioCtx.currentTime;
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+
+          const vol = (volumeSlider ? parseFloat(volumeSlider.value) : 0.7) * 0.05;
+          gain.gain.setValueAtTime(0, now);
+          gain.gain.linearRampToValueAtTime(vol, now + 0.3 + idx * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start(now + idx * 0.1);
+          osc.stop(now + 3.0);
+        });
+      }
+
+      playNextChord();
+      if (synthInterval) clearInterval(synthInterval);
+      synthInterval = setInterval(playNextChord, 2800);
+    }
+
+    function stopRomanticSynth() {
+      if (synthInterval) {
+        clearInterval(synthInterval);
+        synthInterval = null;
+      }
+      usingSynthFallback = false;
+    }
+
+    // Universal Play / Pause handler
+    function toggleAudio(forcePlay = null) {
+      initAudioContext();
+      const targetState = forcePlay !== null ? forcePlay : !audioPlaying;
+
+      if (targetState) {
+        // Attempt HTML5 audio first
+        bgMusic.play().then(() => {
+          usingSynthFallback = false;
+          updateAudioUI(true, 'Playing Song 💖');
+        }).catch((err) => {
+          console.log("Local audio file not detected or stream blocked. Falling back to ambient generator.", err);
+          startRomanticSynthFallback();
+          updateAudioUI(true, 'Ambient Chimes 🌸');
+        });
+      } else {
+        bgMusic.pause();
+        stopRomanticSynth();
+        updateAudioUI(false, 'Paused ⏸️');
+      }
+    }
+
+    function updateAudioUI(isPlaying, statusText) {
+      audioPlaying = isPlaying;
+      if (isPlaying) {
+        discIcon.classList.add('animate-spin');
+        discIcon.style.animationDuration = '4s';
+        musicSourceBadge.textContent = statusText || 'Playing 💖';
+        eqBars.classList.remove('hidden');
+        eqBars.classList.add('flex');
+      } else {
+        discIcon.classList.remove('animate-spin');
+        musicSourceBadge.textContent = statusText || 'Paused ⏸️';
+        eqBars.classList.add('hidden');
+        eqBars.classList.remove('flex');
+      }
+    }
+
+    musicToggleBtn.addEventListener('click', () => toggleAudio());
+
+    // Local file picker for testing or custom play
+    localAudioPicker.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        stopRomanticSynth();
+        const objectUrl = URL.createObjectURL(file);
+        bgMusic.src = objectUrl;
+        currentSongTitle.textContent = file.name.replace(/\.[^/.]+$/, "");
+        toggleAudio(true);
+        closeMusicModal();
+      }
+    });
+
+    // Custom URL loader
+    function loadCustomAudioUrl() {
+      const input = document.getElementById('customAudioUrlInput');
+      if (input && input.value.trim() !== '') {
+        stopRomanticSynth();
+        bgMusic.src = input.value.trim();
+        currentSongTitle.textContent = 'Custom Song';
+        toggleAudio(true);
+        closeMusicModal();
+      }
+    }
+
+    // Volume controller
+    volumeSlider.addEventListener('input', (e) => {
+      bgMusic.volume = parseFloat(e.target.value);
+    });
+
+    // Envelope click satisfies user gesture autoplay requirement
+    document.getElementById('openEnvelopeBtn').addEventListener('click', () => {
+      toggleAudio(true);
+      triggerConfettiStorm(window.innerWidth / 2, window.innerHeight / 2);
+
+      envelopeModal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        envelopeModal.classList.add('hidden');
+        mainPage.classList.remove('opacity-0');
+        mainPage.classList.add('opacity-100');
+      }, 700);
+    });
+
+    // ==========================================
+    // ✨ CANVAS PARTICLES & CONFETTI
+    // ==========================================
+    let width, height;
+    let particles = [];
+    let confetti = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class HeartParticle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = height + Math.random() * 50;
+        this.size = Math.random() * 12 + 8;
+        this.speedY = Math.random() * 1.2 + 0.5;
+        this.speedX = Math.sin(Math.random() * Math.PI) * 0.8;
+        this.opacity = Math.random() * 0.45 + 0.2;
+        this.color = Math.random() > 0.4 ? '#f472b6' : (Math.random() > 0.5 ? '#fbcfe8' : '#e9d5ff');
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.02;
+      }
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotSpeed;
+        if (this.y < -30) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+        
+        ctx.beginPath();
+        const topCurveHeight = this.size * 0.3;
+        ctx.moveTo(0, topCurveHeight);
+        ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+        ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size * 1.2);
+        ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+        ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    class ConfettiPiece {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 9 + 5;
+        this.color = ['#f43f5e', '#ec4899', '#a855f7', '#f59e0b', '#3b82f6', '#10b981', '#fbbf24'][Math.floor(Math.random() * 7)];
+        this.vx = (Math.random() - 0.5) * 16;
+        this.vy = (Math.random() - 0.8) * 16;
+        this.gravity = 0.35;
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 10;
+        this.alpha = 1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += this.gravity;
+        this.rotation += this.rotSpeed;
+        this.alpha -= 0.012;
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.globalAlpha = Math.max(this.alpha, 0);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.7);
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < 30; i++) {
+      particles.push(new HeartParticle());
+    }
+
+    function animateCanvas() {
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      for (let i = confetti.length - 1; i >= 0; i--) {
+        confetti[i].update();
+        confetti[i].draw();
+        if (confetti[i].alpha <= 0) {
+          confetti.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(animateCanvas);
+    }
+    animateCanvas();
+
+    function triggerConfettiStorm(cx = width / 2, cy = height / 2) {
+      for (let i = 0; i < 60; i++) {
+        confetti.push(new ConfettiPiece(cx, cy));
+      }
+    }
+
+    function burstSparkles(x, y) {
+      for (let i = 0; i < 25; i++) {
+        confetti.push(new ConfettiPiece(x, y));
+      }
+    }
+
+    // ==========================================
+    // 🎂 CANDLE BLOW OUT LOGIC
+    // ==========================================
+    function blowCandle(index) {
+      const flame = document.getElementById('flame' + index);
+      if (flame && !flame.classList.contains('extinguished')) {
+        flame.classList.add('extinguished');
+        blownCandles++;
+        
+        const rect = flame.getBoundingClientRect();
+        burstSparkles(rect.left + rect.width / 2, rect.top);
+
+        if (blownCandles >= totalCandles) {
+          showGrandBirthdayClimax();
+        }
+      }
+    }
+
+    function blowAllCandles() {
+      for (let i = 1; i <= totalCandles; i++) {
+        const flame = document.getElementById('flame' + i);
+        if (flame && !flame.classList.contains('extinguished')) {
+          flame.classList.add('extinguished');
+        }
+      }
+      blownCandles = totalCandles;
+      showGrandBirthdayClimax();
+    }
+
+    function relightCandles() {
+      for (let i = 1; i <= totalCandles; i++) {
+        const flame = document.getElementById('flame' + i);
+        if (flame) flame.classList.remove('extinguished');
+      }
+      blownCandles = 0;
+      const blowAllBtn = document.getElementById('blowAllBtn');
+      blowAllBtn.classList.remove('opacity-50', 'pointer-events-none');
+      blowAllBtn.textContent = '🌬️ Blow Out All Candles & Make A Wish!';
+      document.getElementById('grandReveal').classList.add('hidden');
+    }
+
+    function showGrandBirthdayClimax() {
+      const reveal = document.getElementById('grandReveal');
+      const blowAllBtn = document.getElementById('blowAllBtn');
+      
+      blowAllBtn.classList.add('opacity-50', 'pointer-events-none');
+      blowAllBtn.textContent = '✨ All Wishes Made! ✨';
+
+      reveal.classList.remove('hidden');
+      reveal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const x = Math.random() * width;
+          const y = height * 0.35 + Math.random() * (height * 0.3);
+          triggerConfettiStorm(x, y);
+        }, i * 320);
+      }
+    }
+
+    // ==========================================
+    // 🔍 LIGHTBOX & MODALS
+    // ==========================================
+    function openLightbox(src, caption) {
+      const modal = document.getElementById('lightboxModal');
+      const img = document.getElementById('lightboxImg');
+      const cap = document.getElementById('lightboxCaption');
+      img.src = src;
+      cap.textContent = caption;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Music Modal
+    const musicModal = document.getElementById('musicModal');
+    document.getElementById('openMusicModalBtn').addEventListener('click', () => {
+      musicModal.classList.remove('hidden');
+      musicModal.classList.add('flex');
+    });
+    function closeMusicModal() {
+      musicModal.classList.add('hidden');
+      musicModal.classList.remove('flex');
+    }
+
+    // Guide Modal
+    const guideModal = document.getElementById('guideModal');
+    document.getElementById('guideBtn').addEventListener('click', () => {
+      guideModal.classList.remove('hidden');
+      guideModal.classList.add('flex');
+    });
+    function closeGuide() {
+      guideModal.classList.add('hidden');
+      guideModal.classList.remove('flex');
+    }
+
+    // Global escape key handler
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLightbox();
+        closeGuide();
+        closeMusicModal();
+      }
+    });
+  </script>
+</body>
+</html>
